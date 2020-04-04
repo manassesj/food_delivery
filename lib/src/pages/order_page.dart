@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/src/pages/sigin_page.dart';
 
 import 'package:food_delivery/src/widgets/order_card.dart';
 
@@ -132,21 +133,26 @@ class _OrderPageState extends State<OrderPage> {
           SizedBox(
             height: 30.0,
           ),
-          Container(
-              height: 50.0,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(30.0)),
-              child: Center(
-                child: Text(
-                  'Proceed to chekout',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0),
-                ),
-              ))
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SignInPage()));
+            },
+            child: Container(
+                height: 50.0,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(30.0)),
+                child: Center(
+                  child: Text(
+                    'Proceed to chekout',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0),
+                  ),
+                )),
+          )
         ],
       ),
     );
