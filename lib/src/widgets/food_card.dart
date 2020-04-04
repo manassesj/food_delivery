@@ -10,7 +10,7 @@ class FoodCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right:7.0),
+      margin: EdgeInsets.only(right: 7.0),
       child: Card(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 17.0, vertical: 10.0),

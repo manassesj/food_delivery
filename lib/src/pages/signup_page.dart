@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/src/pages/signup_page.dart';
+import 'package:food_delivery/src/pages/sigin_page.dart';
 
-class SignInPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   bool _toggleVisibility = true;
+  bool _toggleConfirmVisibility = true;
 
   Widget _buildEmailTextField() {
     return TextFormField(
       decoration: InputDecoration(
-          hintText: 'Your email or username',
+          hintText: 'Email',
+          hintStyle: TextStyle(color: Color(0xFFBDC2CB), fontSize: 18.0)),
+    );
+  }
+
+  Widget _buildUsernameTextField() {
+    return TextFormField(
+      decoration: InputDecoration(
+          hintText: 'Username',
           hintStyle: TextStyle(color: Color(0xFFBDC2CB), fontSize: 18.0)),
     );
   }
@@ -37,33 +46,39 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  Widget _buildConfirmPassWordTextField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: 'Confirm Password',
+        hintStyle: TextStyle(color: Color(0xFFBDC2CB), fontSize: 18.0),
+        suffixIcon: IconButton(
+          onPressed: () {
+            setState(() {
+              _toggleConfirmVisibility = !_toggleConfirmVisibility;
+            });
+          },
+          icon: _toggleConfirmVisibility
+              ? Icon(Icons.visibility_off)
+              : Icon(Icons.visibility),
+        ),
+      ),
+      obscureText: _toggleConfirmVisibility,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Sign In',
+            Text('Sign Up',
                 style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
             SizedBox(
-              height: 100.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  'Forgotten Password?',
-                  style: TextStyle(
-                      color: Colors.blueAccent,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10.0,
+              height: 50.0,
             ),
             Card(
               elevation: 3.0,
@@ -75,7 +90,15 @@ class _SignInPageState extends State<SignInPage> {
                     SizedBox(
                       height: 15.0,
                     ),
+                    _buildUsernameTextField(),
+                    SizedBox(
+                      height: 15.0,
+                    ),
                     _buildPassWordTextField(),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    _buildConfirmPassWordTextField(),
                   ],
                 ),
               ),
@@ -90,7 +113,7 @@ class _SignInPageState extends State<SignInPage> {
                   borderRadius: BorderRadius.circular(25.0)),
               child: Center(
                   child: Text(
-                'Sign In',
+                'Sign Up',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,
@@ -101,17 +124,16 @@ class _SignInPageState extends State<SignInPage> {
               height: 25.0,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Text("Don't have a account?"),
+              Text("Alredy have an account?"),
               SizedBox(
                 width: 10.0,
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => SignUpPage()));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext) => SignInPage()));
                 },
                 child: Text(
-                  "Sign up",
+                  "Sign In",
                   style: TextStyle(color: Colors.blue, fontSize: 14.0),
                 ),
               )
