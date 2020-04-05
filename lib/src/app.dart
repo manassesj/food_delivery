@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/src/scoped-model/food_model.dart';
+import 'package:food_delivery/src/scoped-model/main_model.dart';
 
 import 'package:food_delivery/src/screens/main_screen.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class App extends StatelessWidget {
-  final FoodModel foodModel = FoodModel();
+  final MainModel mainModel = MainModel();
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<FoodModel>(
-      model: foodModel,
+    return ScopedModel<MainModel>(
+      model: mainModel,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Food Delivery App",
         theme: ThemeData(primaryColor: Colors.blueAccent),
-        home: MainScreen(foodModel: foodModel),
+        home: MainScreen(mainModel: mainModel),
       ),
     );
   }
