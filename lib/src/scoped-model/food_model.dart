@@ -11,13 +11,34 @@ class FoodModel extends Model {
     return List.from(_foods);
   }
 
-  void addFood(Food food) {
+  void addFood(Food food) async {
+    final Map<String, dynamic> foodData = {
+      'title': food.name,
+      'descrioption': food.description,
+      'category': food.category,
+      'price': food.price,
+      'discount': food.discount
+    };
+    final http.Response response = await http.post(
+        'https://foodapp-6872d.firebaseio.com/foods.json',
+        body: json.encode(foodData));
+
+    final Map<String, dynamic> responseData = json.decode(response.body);
+
+    Food foodWithId = Food(
+        id: responseData['name'],
+        name: food.name,
+        description: food.description,
+        category: food.category,
+        discount: food.discount,
+        price: food.price);
+
     _foods.add(food);
   }
 
-  void fetchFoods(){
+  void fetchFoods() {
     http
-        .get("http://192.168.1.106/flutter_food_app/api/foods/getfoods.php")
+        .get("https://foodapp-6872d.firebaseio.com/foods.json")
         .then((http.Response response) {
       final List fetchedData = json.decode(response.body);
       final List<Food> fetchedFoodItems = [];
