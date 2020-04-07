@@ -17,7 +17,7 @@ class FoodModel extends Model {
 
   void fetchFoods(){
     http
-        .get("http://192.168.1.104/flutter_food_app/api/foods/getfoods.php")
+        .get("http://192.168.1.106/flutter_food_app/api/foods/getfoods.php")
         .then((http.Response response) {
       final List fetchedData = json.decode(response.body);
       final List<Food> fetchedFoodItems = [];
