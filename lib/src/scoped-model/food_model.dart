@@ -6,53 +6,73 @@ import 'package:http/http.dart' as http;
 
 class FoodModel extends Model {
   List<Food> _foods = [];
+  bool _isLoading = false;
+
+  bool get isLoading{
+    return _isLoading;
+  }
 
   List<Food> get foods {
     return List.from(_foods);
   }
 
-  void addFood(Food food) async {
-    final Map<String, dynamic> foodData = {
-      'title': food.name,
-      'descrioption': food.description,
-      'category': food.category,
-      'price': food.price,
-      'discount': food.discount
-    };
-    final http.Response response = await http.post(
-        'https://foodapp-6872d.firebaseio.com/foods.json',
-        body: json.encode(foodData));
+  Future<bool> addFood(Food food) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final Map<String, dynamic> foodData = {
+        'title': food.name,
+        'descrioption': food.description,
+        'category': food.category,
+        'price': food.price,
+        'discount': food.discount
+      };
+      final http.Response response = await http.post(
+          'https://foodapp-6872d.firebaseio.com/foods.json',
+          body: json.encode(foodData));
 
-    final Map<String, dynamic> responseData = json.decode(response.body);
+      final Map<String, dynamic> responseData = json.decode(response.body);
 
-    Food foodWithId = Food(
-        id: responseData['name'],
-        name: food.name,
-        description: food.description,
-        category: food.category,
-        discount: food.discount,
-        price: food.price);
+      Food foodWithId = Food(
+          id: responseData['name'],
+          name: food.name,
+          description: food.description,
+          category: food.category,
+          discount: food.discount,
+          price: food.price);
 
-    _foods.add(food);
+      _foods.add(foodWithId);
+      await fetchFoods();
+      return Future.value(true);
+    } catch (err) {
+      return Future.value(false);
+
+      // print('Connection erro' + err);
+    }
   }
 
-  void fetchFoods() {
-    http
+  Future<void> fetchFoods() async {
+    await http
         .get("https://foodapp-6872d.firebaseio.com/foods.json")
         .then((http.Response response) {
-      final List fetchedData = json.decode(response.body);
-      final List<Food> fetchedFoodItems = [];
-      fetchedData.forEach((data) {
-        Food food = Food(
-            id: data['id'],
-            category: data['category_id'],
-            discount: double.parse(data['discount']),
-            imagePath: data['imagepath'],
-            name: data['title'],
-            price: double.parse(data['price']));
-        fetchedFoodItems.add(food);
+      final Map<String, dynamic> fetchedData = json.decode(response.body);
+
+      final List<Food> foodItems = [];
+
+      fetchedData.forEach((String id, dynamic foodData) {
+        Food foodItem = Food(
+          id: id,
+          name: foodData['title'],
+          description: foodData['descrioption'],
+          category: foodData['category'],
+          price: foodData['price'],
+          discount: foodData['discount'],
+        );
+
+        foodItems.add(foodItem);
       });
-      _foods = fetchedFoodItems;
+
+      _foods = foodItems;
       print(_foods);
     });
   }

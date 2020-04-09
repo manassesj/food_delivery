@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/src/admin/pages/add_food_iterm.dart';
 
 //pages
 import 'package:food_delivery/src/pages/home_page.dart';
@@ -45,27 +46,52 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: currentTabIndex,
-          type: BottomNavigationBarType.fixed,
-          onTap: (int index) {
-            setState(() {
-              currentTabIndex = index;
-              currentPage = pages[index];
-            });
-          },
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: Text('Home')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.explore), title: Text('Explore')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart), title: Text('Orderns')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text('Profile')),
-          ]),
-      body: currentPage,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
+        drawer: Drawer(
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => AddFoodItem()));
+                },
+                leading: Icon(Icons.add),
+                title: Text(
+                  'Add food Item',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+              )
+            ],
+          ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: currentTabIndex,
+            type: BottomNavigationBarType.fixed,
+            onTap: (int index) {
+              setState(() {
+                currentTabIndex = index;
+                currentPage = pages[index];
+              });
+            },
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home), title: Text('Home')),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.explore), title: Text('Explore')),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_cart), title: Text('Orderns')),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), title: Text('Profile')),
+            ]),
+        body: currentPage,
+      ),
     );
   }
 }
