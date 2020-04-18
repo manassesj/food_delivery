@@ -8,7 +8,7 @@ class FoodModel extends Model {
   List<Food> _foods = [];
   bool _isLoading = false;
 
-  bool get isLoading{
+  bool get isLoading {
     return _isLoading;
   }
 
@@ -42,19 +42,23 @@ class FoodModel extends Model {
           price: food.price);
 
       _foods.add(foodWithId);
-      await fetchFoods();
+      notifyListeners();
       return Future.value(true);
     } catch (err) {
+      notifyListeners();
       return Future.value(false);
 
       // print('Connection erro' + err);
     }
   }
 
-  Future<void> fetchFoods() async {
-    await http
-        .get("https://foodapp-6872d.firebaseio.com/foods.json")
-        .then((http.Response response) {
+  Future<bool> fetchFoods() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final http.Response response =
+          await http.get("https://foodapp-6872d.firebaseio.com/foods.json");
+
       final Map<String, dynamic> fetchedData = json.decode(response.body);
 
       final List<Food> foodItems = [];
@@ -73,7 +77,14 @@ class FoodModel extends Model {
       });
 
       _foods = foodItems;
-      print(_foods);
-    });
+      _isLoading = false;
+      notifyListeners();
+      return Future.value(true);
+
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      return Future.value(false);
+    }
   }
 }

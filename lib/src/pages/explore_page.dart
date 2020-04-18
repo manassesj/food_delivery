@@ -20,14 +20,17 @@ class _ExplorePageState extends State<ExplorePage> {
           List<Food> foods = model.foods;
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: ListView(
-              children: foods.map((food) {
-                return FoodItemcard(
-                  title: food.name,
-                  price: food.price.toString(),
-                  description: food.description,
-                );
-              }).toList(),
+            child: RefreshIndicator(
+              onRefresh: model.fetchFoods,
+              child: ListView(
+                children: foods.map((food) {
+                  return FoodItemcard(
+                    title: food.name,
+                    price: food.price.toString(),
+                    description: food.description,
+                  );
+                }).toList(),
+              ),
             ),
           );
         },
